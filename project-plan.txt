@@ -14,16 +14,16 @@ Services:  RETAIL-SHOP, WAREHOUSE, DELIVERY, USER-AUTHENTICATION
 RETAIL-SHOP-core-service	used by: SHOP-OWNER
 ------------
 
-Rest endpoints:				            Permission			        Other services used			            Used by services	         Additional notes
+Rest endpoints:                                 Permission                Other services used               Used by services             Additional notes
 --------------
-Get location/contact details		  SHOP-OWNER DELIVERY			        -				                        DELIVERY			
-Update location/contact details		SHOP-OWNER				              -					                          -
-Get items with pending delivery		SHOP-OWNER			        Get from WAREHOUSE			                  	- 
-Get delivery driver details		    SHOP-OWNER			        Get from DELIVERY				                    -		
-Get available items			          SHOP-OWNER			        Get from WAREHOUSE				                  -
-Post new order				            SHOP-OWNER			        Post to WAREHOUSE				                    -		               Checks for availability and credit limit first
-Post when order arrived			      SHOP-OWNER			        Post to WAREHOUSE DELIVERY			            -
-Get credit amount			            SHOP-OWNER				               -					                        -
+Get location/contact details                    SHOP-OWNER DELIVERY              -                           DELIVERY			
+Update location/contact details                 SHOP-OWNER                       -                                  -
+Get items with pending delivery                 SHOP-OWNER                Get from WAREHOUSE                        - 
+Get delivery driver details                     SHOP-OWNER                Get from DELIVERY                         -		
+Get available items                             SHOP-OWNER                Get from WAREHOUSE                        -
+Post new order                                  SHOP-OWNER                Post to WAREHOUSE                         -                    Checks for availability and credit limit first
+Post when order arrived                         SHOP-OWNER                Post to WAREHOUSE DELIVERY                -
+Get credit amount                               SHOP-OWNER                       -                                  -
 
 Database:
 --------
@@ -36,15 +36,15 @@ Items with pending delivery
 WAREHOUSE-core-service	used by: WAREHOUSE-MANAGER
 ------------
 
-Rest endpoints:				           Permission			              Other services used		        Used by services		        Additonal notes
+Rest endpoints:                     Permission                        Other services used                Used by services                Additonal notes
 --------------
-Post add new item			        WAREHOUSE-MANAGER			                  -				                    -
-Update item quantity		      WAREHOUSE-MANAGER 			                -				                    -
-Delete item				            WAREHOUSE-MANAGER			                  -				                    -
-Get items and availability		WAREHOUSE-MANAGER,RETAIL-SHOP		        -			                RETAIL-SHOP
-Get pending order list			  WAREHOUSE-MANAGER			                  -				                    -
-Post new order				        RETAIL-SHOP			                Post to DELIVERY		          RETAIL-SHOP			            Assign delivery
-Update order status			      RETAIL-SHOP, DELIVERY			              -			                RETAIL-SHOP, DELIVERY		    Set order to dispatched or completed
+Post add new item                WAREHOUSE-MANAGER                             -                                -
+Update item quantity             WAREHOUSE-MANAGER                             -                                -
+Delete item                      WAREHOUSE-MANAGER                             -                                -
+Get items and availability       WAREHOUSE-MANAGER,RETAIL-SHOP                 -                         RETAIL-SHOP
+Get pending order list           WAREHOUSE-MANAGER                             -                                -
+Post new order                   RETAIL-SHOP                           Post to DELIVERY                  RETAIL-SHOP                      Assign delivery
+Update order status              RETAIL-SHOP, DELIVERY                         -                         RETAIL-SHOP, DELIVERY            Set order to dispatched or completed
 
 Database:
 --------
@@ -56,14 +56,14 @@ Order list and status (pending or dispatched)
 DELIVERY-core-service	used by: DRIVERS
 ----------------
 
-Rest endpoints:				          Permission			  Other services used			  Used by services	      Additional functions
+Rest endpoints:                     Permission              Other services used             Used by services	      Additional functions
 --------------
-Post driver availabilty			    DRIVER					          -					              -		              Trigger delivery assign
-Get assigned orders			        DRIVER				    Get from SHOP-OWNER				      -	
-Update driver information		    DRIVER					          -					              -
-Post delivery to queue			    WAREHOUSE				          -				            WAREHOUSE		          Trigger delivery assign
-Post delivery pickup			      WAREHOUSE				          -				            WAREHOUSE
-Post delivery completed			    RETAIL SHOP				        -				            RETAIL-SHOP		        Trigger delivery assign	
+Post driver availabilty             DRIVER                           -                             -                  Trigger delivery assign
+Get assigned orders                 DRIVER                  Get from SHOP-OWNER                    -	
+Update driver information           DRIVER                           -                             -
+Post delivery to queue              WAREHOUSE                        -                        WAREHOUSE               Trigger delivery assign
+Post delivery pickup                WAREHOUSE                        -                        WAREHOUSE
+Post delivery completed             RETAIL SHOP                      -                        RETAIL-SHOP             Trigger delivery assign	
 
 Database:
 --------
