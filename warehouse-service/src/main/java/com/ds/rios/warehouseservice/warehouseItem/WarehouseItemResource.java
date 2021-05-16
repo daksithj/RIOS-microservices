@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/warehouse")
 public class WarehouseItemResource {
 
     private final WarehouseItemRepository repository;

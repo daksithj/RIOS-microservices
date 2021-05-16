@@ -1,0 +1,53 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: zuul-gateway-server
+
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8081/eureka/
+
+zuul:
+#  prefix: /api
+  routes:
+
+    warehouse-service:
+      service-id: warehouse-service
+      path: /warehouse/**
+      uri: lb://WAREHOUSE-SERVICE
+      strip-prefix: false
+
+    delivery-service:
+      service-id: delivery-service
+      path: /delivery/**
+      uri: lb://DELIVERY-SERVICE
+      strip-prefix: false
+
+#ribbon:
+#  eureka:
+#    enabled: true
+#  ReadTimeout: 60000
+
+# Increase the Hystrix timeout to 60s (globally)
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+
+
+
+
+
+
+
