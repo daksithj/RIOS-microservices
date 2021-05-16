@@ -31,6 +31,11 @@ zuul:
       uri: lb://DELIVERY-SERVICE
       strip-prefix: false
 
+    retailShop-service:
+      service-id: retailShop-service
+      path: /retailshop/**
+      uri: lb://RETAILSHOP-SERVICE
+      strip-prefix: false
 #ribbon:
 #  eureka:
 #    enabled: true
