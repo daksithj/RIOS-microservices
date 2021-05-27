@@ -36,6 +36,13 @@ zuul:
       path: /retailshop/**
       uri: lb://RETAILSHOP-SERVICE
       strip-prefix: false
+
+    auth-service:
+      service-id: auth-service
+      path: /auth/**
+      uri: lb://AUTH-SERVICE
+      strip-prefix: false
+      sensitive-headers: Cookie,Set-Cookie
 #ribbon:
 #  eureka:
 #    enabled: true
