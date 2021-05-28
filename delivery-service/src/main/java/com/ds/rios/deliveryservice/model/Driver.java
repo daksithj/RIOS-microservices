@@ -6,13 +6,14 @@ import javax.persistence.*;
 @Entity
 public class Driver {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private String idNumber;
     private String contactNumber;
+    private String driverStatus;
+
 
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
@@ -20,14 +21,23 @@ public class Driver {
     private Vehicle vehicle;
 
     protected Driver() {
+
     }
 
-    public Driver(String name, String idNumber, String contactNumber) {
+    public Driver(String name, String idNumber, String contactNumber, String driverStatus) {
         this.name = name;
         this.idNumber = idNumber;
         this.contactNumber = contactNumber;
+        this.driverStatus = driverStatus;
     }
 
+    public String getDriverStatus() {
+        return driverStatus;
+    }
+
+    public void setDriverStatus(String driverStatus) {
+        this.driverStatus = driverStatus;
+    }
 
     public Long getId() {
         return id;

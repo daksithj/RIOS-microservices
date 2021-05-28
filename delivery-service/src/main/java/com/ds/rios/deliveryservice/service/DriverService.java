@@ -32,7 +32,7 @@ public class DriverService {
 
     public Driver addNewDriver(Driver driver) {
         Vehicle vehicle = vehicleService.addNewVehicle(driver.getVehicle());
-        Driver newDriver = new Driver(driver.getName(), driver.getIdNumber(), driver.getContactNumber());
+        Driver newDriver = new Driver(driver.getName(), driver.getIdNumber(), driver.getContactNumber(),driver.getDriverStatus());
         newDriver.setVehicle(vehicle);
         return driverRepository.save(newDriver);
     }
@@ -46,7 +46,14 @@ public class DriverService {
             driverUpdate.setContactNumber(driver.getContactNumber());
             driverUpdate.setIdNumber(driver.getIdNumber());
             driverUpdate.setVehicle(vehicle);
+            driverUpdate.setDriverStatus(driver.getDriverStatus());
         }
+        return driverRepository.save(driver);
+    }
+
+    public Driver updateDriverStatus(long driverId, String newStatus){
+        Driver driver = driverRepository.findById(driverId).orElseThrow(() -> new DriverNotFoundException(driverId));
+        driver.setDriverStatus(newStatus);
         return driverRepository.save(driver);
     }
 
