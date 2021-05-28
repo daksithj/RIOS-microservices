@@ -53,6 +53,12 @@ public class DriverController {
         return driverService.updateDriver(driver, driverId);
     }
 
+
+    @PutMapping(value = "/drivers/driverStatus/{driverId}/{DriverStatus}", produces = {"application/json"}, consumes = {"application/json"})
+    public Driver updateDriver(@PathVariable("driverId") long driverId,@PathVariable("DriverStatus") String driverStatus) {
+        return driverService.updateDriverStatus(driverId,driverStatus);
+    }
+
     @DeleteMapping(value = "/drivers/{driverId}", produces = {"application/json"})
     public ResponseEntity<?> deleteDriver(@PathVariable("driverId") long driverId) {
         driverService.deleteDriverById(driverId);
