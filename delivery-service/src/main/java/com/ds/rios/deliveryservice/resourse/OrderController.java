@@ -51,7 +51,6 @@ public class OrderController {
 
     }
 
-
     @PutMapping(value = "/orders/{orderId}", produces = {"application/json"}, consumes = {"application/json"})
     public AssignOrder updateOrders(@RequestBody AssignOrder assignOrder, @PathVariable("orderId") long orderId) {
         return orderService.updateOrder(orderId, assignOrder);
@@ -62,5 +61,7 @@ public class OrderController {
     public AssignOrder newOrders(@RequestBody AssignOrder assignOrder) {
         return orderService.AddNewOrder(assignOrder);
     }
+
+
 
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RetailShopService {
@@ -30,6 +31,13 @@ public class RetailShopService {
         return retailShopRepository.findById(id).orElseThrow(() -> new RetailShopNotFoundException(id));
     }
 
+    public RetailShop updateRetailShop(RetailShop retailShop, long retailShopId) {
+        RetailShop preRetailShop = retailShopRepository.findById(retailShopId).orElseThrow(() -> new RetailShopNotFoundException(retailShopId));
+        preRetailShop.setAddress(retailShop.getAddress());
+        preRetailShop.setContactNumber(retailShop.getContactNumber());
+        preRetailShop.setShopName(retailShop.getShopName());
+        return retailShopRepository.save(preRetailShop);
+    }
 
 
 }
