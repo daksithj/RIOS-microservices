@@ -1,8 +1,10 @@
 package com.ds.rios.deliveryservice;
 
 import com.ds.rios.deliveryservice.model.Driver;
+import com.ds.rios.deliveryservice.model.AssignOrder;
 import com.ds.rios.deliveryservice.model.Vehicle;
 import com.ds.rios.deliveryservice.repositery.DriverRepository;
+import com.ds.rios.deliveryservice.repositery.OrderRepository;
 import com.ds.rios.deliveryservice.repositery.VehicleRepository;
 import com.ds.rios.deliveryservice.service.VehicleService;
 import org.slf4j.Logger;
@@ -32,8 +34,9 @@ public class DeliveryServiceApplication {
 
 
     @Bean
-    public CommandLineRunner demo(DriverRepository driverRepository, VehicleRepository vehicleRepository) {
+    public CommandLineRunner demo(DriverRepository driverRepository, VehicleRepository vehicleRepository, OrderRepository orderRepository) {
         return (args) -> {
+
 
             Vehicle v1 = new Vehicle("ABC-1212", "Toyota");
             Vehicle v2 = new Vehicle("ABC-12asdas12", "Toyota");
@@ -43,10 +46,14 @@ public class DeliveryServiceApplication {
             v2.setDriver(s2);
             s.setVehicle(v1);
             s2.setVehicle(v2);
+
             vehicleRepository.save(v1);
             driverRepository.save(s);
             vehicleRepository.save(v2);
             driverRepository.save(s2);
+            AssignOrder o1 = new AssignOrder(2,2,"bandaragama");
+            o1.setDriver(s);
+            orderRepository.save(o1);
 
         };
     }
