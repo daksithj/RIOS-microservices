@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+
+
 @Service
 public class DriverService {
 
@@ -21,6 +23,8 @@ public class DriverService {
     @Autowired
     private VehicleService vehicleService;
 
+    private static final String DRIVER_ACTIVE_STATUS = "Available";
+    private static final String DRIVER_NOT__ACTIVE_STATUS = "NotAvailable";
 
     public List<Driver> getAllDrivers() {
         return driverRepository.findAll();
@@ -49,6 +53,12 @@ public class DriverService {
             driverUpdate.setDriverStatus(driver.getDriverStatus());
         }
         return driverRepository.save(driver);
+    }
+
+
+    public Driver getAvailableDrivers(){
+        List<Driver> byDriverStatus = driverRepository.findByDriverStatus(DRIVER_ACTIVE_STATUS);
+        return byDriverStatus.get(0);
     }
 
     public Driver updateDriverStatus(long driverId, String newStatus){

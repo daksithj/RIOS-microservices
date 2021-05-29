@@ -17,6 +17,9 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
+    private static final String DRIVER_ACTIVE_STATUS = "Available";
+    private static final String DRIVER_NOT__ACTIVE_STATUS = "NotAvailable";
+
     @Autowired
     private DriverService driverService;
     public AssignOrder getOrderById(long id) {
@@ -27,9 +30,10 @@ public class OrderService {
 
     public AssignOrder AddNewOrder(AssignOrder assignOrder){
 
-        Driver driver = driverService.getDriverById(2);
+        Driver driver = driverService.getAvailableDrivers();
         AssignOrder newAssignOrder = new AssignOrder(assignOrder.getOrderId(), assignOrder.getShopId(), assignOrder.getLocation());
         newAssignOrder.setDriver(driver);
+        driverService.updateDriverStatus(driver.getId(),DRIVER_NOT__ACTIVE_STATUS);
         return orderRepository.save(newAssignOrder);
     }
     public AssignOrder updateOrder(long id, AssignOrder assignOrder) {

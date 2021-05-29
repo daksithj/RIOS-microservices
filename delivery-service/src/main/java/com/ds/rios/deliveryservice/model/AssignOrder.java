@@ -15,8 +15,8 @@ public class AssignOrder {
     private long shopId;
     private String location;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "driver_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name="driver_id", nullable=false)
     private Driver driver;
 
     protected AssignOrder() {

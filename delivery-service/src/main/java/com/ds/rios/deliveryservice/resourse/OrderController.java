@@ -22,7 +22,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RestController
-@RequestMapping("/dd")
 public class OrderController {
 
     @Autowired
@@ -37,7 +36,7 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @GetMapping(value = "/Orders", produces = {"application/json"})
+    @GetMapping(value = "/orders", produces = {"application/json"})
     public CollectionModel<EntityModel<AssignOrder>> getAllOrders() {
         List<EntityModel<AssignOrder>> collectDrivers = orderService.getAllOrder().stream()
                 .map(oderModelAssembler::toModel)
@@ -45,7 +44,7 @@ public class OrderController {
         return CollectionModel.of(collectDrivers, linkTo(methodOn(DriverController.class).getAllDrivers()).withSelfRel());
     }
 
-    @GetMapping(value = "/Orders/{orderId}", produces = {"application/json"})
+    @GetMapping(value = "/orders/{orderId}", produces = {"application/json"})
     public ResponseEntity<?> getOrderById(@PathVariable("orderId") long orderId) {
         EntityModel<AssignOrder> orderEntityModel = oderModelAssembler.toModel(orderService.getOrderById(orderId));
         return ResponseEntity.created(orderEntityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(orderEntityModel);
@@ -53,20 +52,13 @@ public class OrderController {
     }
 
 
-    @GetMapping(value = "/drivers/{driverId}", produces = {"application/json"})
-    public ResponseEntity<?> getDriverById(@PathVariable("driverId") long driverId) {
-        EntityModel<Driver> driverEntityModel = driverModelAssembler.toModel(driverService.getDriverById(driverId));
-        return ResponseEntity.created(driverEntityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(driverEntityModel);
-
-    }
-
-    @PutMapping(value = "/Orders/{orderId}", produces = {"application/json"}, consumes = {"application/json"})
+    @PutMapping(value = "/orders/{orderId}", produces = {"application/json"}, consumes = {"application/json"})
     public AssignOrder updateOrders(@RequestBody AssignOrder assignOrder, @PathVariable("orderId") long orderId) {
         return orderService.updateOrder(orderId, assignOrder);
     }
 
 
-    @PostMapping(value = "/Orders", produces = {"application/json"}, consumes = {"application/json"})
+    @PostMapping(value = "/orders", produces = {"application/json"}, consumes = {"application/json"})
     public AssignOrder newOrders(@RequestBody AssignOrder assignOrder) {
         return orderService.AddNewOrder(assignOrder);
     }

@@ -4,9 +4,10 @@ package com.ds.rios.deliveryservice.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "assignOrder"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "assignOrders"})
 public class Driver {
 
     @Id
@@ -24,10 +25,8 @@ public class Driver {
     private Vehicle vehicle;
 
 
-    @OneToOne(fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL,
-            mappedBy = "driver")
-    private AssignOrder assignOrder;
+    @OneToMany(mappedBy = "driver")
+    private Set<AssignOrder> assignOrders;
 
     protected Driver() {
 
@@ -38,6 +37,14 @@ public class Driver {
         this.idNumber = idNumber;
         this.contactNumber = contactNumber;
         this.driverStatus = driverStatus;
+    }
+
+    public Set<AssignOrder> getAssignOrders() {
+        return assignOrders;
+    }
+
+    public void setAssignOrders(Set<AssignOrder> assignOrders) {
+        this.assignOrders = assignOrders;
     }
 
     public String getDriverStatus() {
@@ -86,13 +93,6 @@ public class Driver {
 
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
-    }
-    public AssignOrder getAssignOrder() {
-        return assignOrder;
-    }
-
-    public void setAssignOrder(AssignOrder assignOrder) {
-        this.assignOrder = assignOrder;
     }
 
 }

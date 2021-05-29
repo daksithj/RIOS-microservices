@@ -41,7 +41,7 @@ public class DeliveryServiceApplication {
             Vehicle v1 = new Vehicle("ABC-1212", "Toyota");
             Vehicle v2 = new Vehicle("ABC-12asdas12", "Toyota");
             Driver s = new Driver("AMM11", "97888099V", "7790909","Available");
-            Driver s2 = new Driver("AMM22", "97888099V", "7790909","Not Available");
+            Driver s2 = new Driver("AMM22", "97888099V", "7790909","NotAvailable");
             v1.setDriver(s);
             v2.setDriver(s2);
             s.setVehicle(v1);
