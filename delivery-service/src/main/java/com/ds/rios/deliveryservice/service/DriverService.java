@@ -2,9 +2,12 @@ package com.ds.rios.deliveryservice.service;
 
 import com.ds.rios.deliveryservice.dto.DriverNotFoundException;
 
+import com.ds.rios.deliveryservice.dto.OrderNotFoundException;
+import com.ds.rios.deliveryservice.model.AssignOrder;
 import com.ds.rios.deliveryservice.model.Driver;
 import com.ds.rios.deliveryservice.model.Vehicle;
 import com.ds.rios.deliveryservice.repositery.DriverRepository;
+import com.ds.rios.deliveryservice.repositery.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +24,14 @@ public class DriverService {
     private DriverRepository driverRepository;
 
     @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
     private VehicleService vehicleService;
 
     private static final String DRIVER_ACTIVE_STATUS = "Available";
     private static final String DRIVER_NOT__ACTIVE_STATUS = "NotAvailable";
-
+    private static final String ORDER_DELIVERY_STATUS_PENDING = "Pending";
     public List<Driver> getAllDrivers() {
         return driverRepository.findAll();
     }
@@ -39,6 +45,12 @@ public class DriverService {
         Driver newDriver = new Driver(driver.getName(), driver.getIdNumber(), driver.getContactNumber(),driver.getDriverStatus());
         newDriver.setVehicle(vehicle);
         return driverRepository.save(newDriver);
+    }
+
+    public void getDriverItems(long driverId){
+        Driver driver = driverRepository.findById(driverId).orElseThrow(() -> new OrderNotFoundException(driverId));
+        List<AssignOrder> assignOrderUpdated = orderRepository.findByAssignmentStatusAndDriverId(ORDER_DELIVERY_STATUS_PENDING,driver.getId());
+        System.out.println(assignOrderUpdated.get(0).getId());
     }
 
     public Driver updateDriver(Driver driver, long driverId) {

@@ -13,7 +13,7 @@ public class AssignOrder {
     private long id;
     private long orderId;
     private long shopId;
-    private String location;
+    private String assignmentStatus;
 
     @ManyToOne
     @JoinColumn(name="driver_id", nullable=false)
@@ -22,10 +22,10 @@ public class AssignOrder {
     protected AssignOrder() {
     }
 
-    public AssignOrder(long orderId, long shopId, String location) {
+    public AssignOrder(long orderId, long shopId, String assignmentStatus) {
         this.orderId = orderId;
         this.shopId = shopId;
-        this.location = location;
+        this.assignmentStatus = assignmentStatus;
     }
 
     public long getId() {
@@ -52,12 +52,12 @@ public class AssignOrder {
         this.shopId = shopId;
     }
 
-    public String getLocation() {
-        return location;
+    public String getAssignmentStatus() {
+        return assignmentStatus;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setAssignmentStatus(String assignmentStatus) {
+        this.assignmentStatus = assignmentStatus;
     }
 
     public Driver getDriver() {
