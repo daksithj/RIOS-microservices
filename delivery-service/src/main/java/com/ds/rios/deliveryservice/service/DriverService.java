@@ -1,7 +1,9 @@
 package com.ds.rios.deliveryservice.service;
 
+import com.ds.rios.deliveryservice.dto.DeliveryDetails;
 import com.ds.rios.deliveryservice.dto.DriverNotFoundException;
 
+import com.ds.rios.deliveryservice.dto.NotFoundException;
 import com.ds.rios.deliveryservice.dto.OrderNotFoundException;
 import com.ds.rios.deliveryservice.model.AssignOrder;
 import com.ds.rios.deliveryservice.model.Driver;
@@ -22,6 +24,9 @@ public class DriverService {
 
     @Autowired
     private DriverRepository driverRepository;
+
+    @Autowired
+    private OrderService orderService;
 
     @Autowired
     private OrderRepository orderRepository;
@@ -47,11 +52,15 @@ public class DriverService {
         return driverRepository.save(newDriver);
     }
 
-    public void getDriverItems(long driverId){
+    public DeliveryDetails getDriverItems(long driverId){
         Driver driver = driverRepository.findById(driverId).orElseThrow(() -> new OrderNotFoundException(driverId));
         List<AssignOrder> assignOrderUpdated = orderRepository.findByAssignmentStatusAndDriverId(ORDER_DELIVERY_STATUS_PENDING,driver.getId());
-        System.out.println(assignOrderUpdated.get(0).getId());
+        if(assignOrderUpdated.size()==0){
+            throw  new NotFoundException(driver.getId());
+        }
+        return orderService.getItemWithPendingDelivery(assignOrderUpdated.get(0).getOrderId());
     }
+
 
     public Driver updateDriver(Driver driver, long driverId) {
         Vehicle vehicle = vehicleService.updateVehicle(driver.getVehicle().getId(), driver.getVehicle());
@@ -70,6 +79,9 @@ public class DriverService {
 
     public Driver getAvailableDrivers(){
         List<Driver> byDriverStatus = driverRepository.findByDriverStatus(DRIVER_ACTIVE_STATUS);
+        if(byDriverStatus.size()==0){
+            throw  new NotFoundException(0l);
+        }
         return byDriverStatus.get(0);
     }
 

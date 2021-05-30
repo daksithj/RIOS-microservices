@@ -1,5 +1,7 @@
 server:
   port: 8089
+  servlet:
+    contextPath: /retailShop/
 
 spring:
   application:

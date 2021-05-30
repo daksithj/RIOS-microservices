@@ -1,12 +1,17 @@
 package com.ds.rios.deliveryservice.service;
 
 
-import com.ds.rios.deliveryservice.dto.OrderNotFoundException;
+import com.ds.rios.deliveryservice.dto.*;
 import com.ds.rios.deliveryservice.model.Driver;
 import com.ds.rios.deliveryservice.model.AssignOrder;
 import com.ds.rios.deliveryservice.repositery.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.client.RestTemplate;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -15,8 +20,12 @@ import java.util.Optional;
 public class OrderService {
 
     @Autowired
-    private OrderRepository orderRepository;
+    private RestTemplate restTemplate;
 
+    @Autowired
+    private OrderRepository orderRepository;
+    private static final String WAREHOUSE_SERVICE_URL = "http://WAREHOUSE-SERVICE";
+    private static final String RETAILSHOP_SERVICE_URL = "http://RETAILSHOP-SERVICE";
     private static final String DRIVER_ACTIVE_STATUS = "Available";
     private static final String DRIVER_NOT__ACTIVE_STATUS = "NotAvailable";
     private static final String ORDER_DELIVERY_STATUS_PICKED_UP = "Picked up";
@@ -35,6 +44,13 @@ public class OrderService {
         return orderRepository.save(assignOrderUpdated);
 
     }
+
+    public DeliveryDetails getItemWithPendingDelivery(Long id){
+        WarehouseOrder warehouseOrder =restTemplate.getForObject(WAREHOUSE_SERVICE_URL+"/warehouse/orders/" + id, WarehouseOrder.class);
+        RetailShop retailShop =restTemplate.getForObject(RETAILSHOP_SERVICE_URL+"/retailShop/shops/" + warehouseOrder.getRetailId(), RetailShop.class);
+        return new DeliveryDetails(retailShop,warehouseOrder);
+    }
+
 
     public AssignOrder completeOrder(long orderId){
         AssignOrder assignOrderUpdated = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException(orderId));

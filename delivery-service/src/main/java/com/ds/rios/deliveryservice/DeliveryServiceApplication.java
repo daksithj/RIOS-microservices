@@ -14,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 
 
 @SpringBootApplication
@@ -34,7 +36,11 @@ public class DeliveryServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(DeliveryServiceApplication.class, args);
     }
-
+    @Bean
+    @LoadBalanced
+    public RestTemplate getRestTemplate() {
+        return new RestTemplate();
+    }
 
     @Bean
     public CommandLineRunner demo(DriverRepository driverRepository, VehicleRepository vehicleRepository, OrderRepository orderRepository) {
@@ -57,7 +63,6 @@ public class DeliveryServiceApplication {
             AssignOrder o1 = new AssignOrder(2,2,"Pending");
             o1.setDriver(s);
             orderRepository.save(o1);
-            driverService.getDriverItems(s.getId());
 
         };
     }
