@@ -1,10 +1,15 @@
 package com.ds.rios.deliveryservice.service;
 
+import com.ds.rios.deliveryservice.dto.DeliveryDetails;
 import com.ds.rios.deliveryservice.dto.DriverNotFoundException;
 
+import com.ds.rios.deliveryservice.dto.NotFoundException;
+import com.ds.rios.deliveryservice.dto.OrderNotFoundException;
+import com.ds.rios.deliveryservice.model.AssignOrder;
 import com.ds.rios.deliveryservice.model.Driver;
 import com.ds.rios.deliveryservice.model.Vehicle;
 import com.ds.rios.deliveryservice.repositery.DriverRepository;
+import com.ds.rios.deliveryservice.repositery.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +26,17 @@ public class DriverService {
     private DriverRepository driverRepository;
 
     @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
     private VehicleService vehicleService;
 
     private static final String DRIVER_ACTIVE_STATUS = "Available";
     private static final String DRIVER_NOT__ACTIVE_STATUS = "NotAvailable";
-
+    private static final String ORDER_DELIVERY_STATUS_PENDING = "Pending";
     public List<Driver> getAllDrivers() {
         return driverRepository.findAll();
     }
@@ -40,6 +51,16 @@ public class DriverService {
         newDriver.setVehicle(vehicle);
         return driverRepository.save(newDriver);
     }
+
+    public DeliveryDetails getDriverItems(long driverId){
+        Driver driver = driverRepository.findById(driverId).orElseThrow(() -> new OrderNotFoundException(driverId));
+        List<AssignOrder> assignOrderUpdated = orderRepository.findByAssignmentStatusAndDriverId(ORDER_DELIVERY_STATUS_PENDING,driver.getId());
+        if(assignOrderUpdated.size()==0){
+            throw  new NotFoundException(driver.getId());
+        }
+        return orderService.getItemWithPendingDelivery(assignOrderUpdated.get(0).getOrderId());
+    }
+
 
     public Driver updateDriver(Driver driver, long driverId) {
         Vehicle vehicle = vehicleService.updateVehicle(driver.getVehicle().getId(), driver.getVehicle());
@@ -58,6 +79,9 @@ public class DriverService {
 
     public Driver getAvailableDrivers(){
         List<Driver> byDriverStatus = driverRepository.findByDriverStatus(DRIVER_ACTIVE_STATUS);
+        if(byDriverStatus.size()==0){
+            throw  new NotFoundException(0l);
+        }
         return byDriverStatus.get(0);
     }
 
