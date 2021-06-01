@@ -14,9 +14,6 @@ eureka:
       defaultZone: https://rios-discovery-service.herokuapp.com/eureka/
 
 zuul:
-  host:
-    connect-timeout-millis: 20000
-    socket-timeout-millis: 60000
 #  prefix: /api
   routes:
 
@@ -44,10 +41,12 @@ zuul:
       uri: lb://AUTH-SERVICE
       strip-prefix: false
       sensitive-headers: Cookie,Set-Cookie
-#ribbon:
-#  eureka:
-#    enabled: true
-#  ReadTimeout: 60000
+      
+ribbon:
+  eureka:
+    enabled: true
+  ReadTimeout: 60000
+  ConnectTimeout: 20000
 
 # Increase the Hystrix timeout to 60s (globally)
 hystrix:
