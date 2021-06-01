@@ -14,6 +14,9 @@ eureka:
       defaultZone: https://rios-discovery-service.herokuapp.com/eureka/
 
 zuul:
+  host:
+    connect-timeout-millis: 20000
+    socket-timeout-millis: 60000
 #  prefix: /api
   routes:
 
