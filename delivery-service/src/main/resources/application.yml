@@ -19,13 +19,11 @@ spring:
           enabled: true
           path: /h2console/
 eureka:
-  instance:
-    prefer-ip-address: true
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://localhost:8081/eureka/
+      defaultZone: https://rios-discovery-service.herokuapp.com/eureka/
 
 
 
