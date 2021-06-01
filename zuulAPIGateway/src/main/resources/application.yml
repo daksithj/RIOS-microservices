@@ -42,15 +42,20 @@ zuul:
       strip-prefix: false
       sensitive-headers: Cookie,Set-Cookie
       
-
-# Increase the Hystrix timeout to 60s (globally)
+ribbon:
+  eureka:
+    enabled: true
+  ReadTimeout: 60000
+  ConnectTimeout: 20000
+    
+# Increase the Hystrix timeout to 100s (globally)
 hystrix:
   command:
     default:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 60000
+            timeoutInMilliseconds: 100000
 
 
 
