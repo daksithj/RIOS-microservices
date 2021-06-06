@@ -51,16 +51,34 @@ public class OrderController {
 
     }
 
+
     @PutMapping(value = "/orders/{orderId}", produces = {"application/json"}, consumes = {"application/json"})
     public AssignOrder updateOrders(@RequestBody AssignOrder assignOrder, @PathVariable("orderId") long orderId) {
         return orderService.updateOrder(orderId, assignOrder);
     }
 
 
+
     @PostMapping(value = "/orders", produces = {"application/json"}, consumes = {"application/json"})
     public AssignOrder newOrders(@RequestBody AssignOrder assignOrder) {
         return orderService.AddNewOrder(assignOrder);
     }
+
+    @PutMapping(value = "/pickUpOrders/{orderId}", produces = {"application/json"}, consumes = {"application/json"})
+    public AssignOrder pickUpOrders( @PathVariable("orderId") long orderId) {
+        return orderService.pickUpOrder(orderId);
+    }
+
+    @PutMapping(value = "/completeDeliveryOrders/{orderId}", produces = {"application/json"}, consumes = {"application/json"})
+    public AssignOrder completeDeliveryOrders( @PathVariable("orderId") long orderId) {
+        return orderService.completeOrder(orderId);
+    }
+
+    @PutMapping(value = "/cancelOrder/{orderId}", produces = {"application/json"}, consumes = {"application/json"})
+    public AssignOrder cancelDeliveryOrders( @PathVariable("orderId") long orderId) {
+        return orderService.cancelOrder(orderId);
+    }
+
 
 
 

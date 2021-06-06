@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,6 +42,12 @@ public class DriverController {
         EntityModel<Driver> driverEntityModel = driverModelAssembler.toModel(driverService.getDriverById(driverId));
         return ResponseEntity.created(driverEntityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(driverEntityModel);
 
+    }
+
+
+    @GetMapping(value = "/getDeliveryItems/{driverId}", produces = {"application/json"})
+    public ResponseEntity<?> getDriverItems(@PathVariable("driverId") long driverId) {
+        return new ResponseEntity(driverService.getDriverItems(driverId), HttpStatus.FOUND);
     }
 
     @PostMapping(value = "/drivers", produces = {"application/json"}, consumes = {"application/json"})
