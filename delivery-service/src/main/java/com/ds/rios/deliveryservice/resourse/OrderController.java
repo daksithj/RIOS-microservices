@@ -72,6 +72,22 @@ public class OrderController {
         return orderService.AddNewOrder(assignOrder);
     }
 
+    @PutMapping(value = "/pickUpOrders/{orderId}", produces = {"application/json"}, consumes = {"application/json"})
+    public AssignOrder pickUpOrders( @PathVariable("orderId") long orderId) {
+        return orderService.pickUpOrder(orderId);
+    }
+
+    @PutMapping(value = "/completeDeliveryOrders/{orderId}", produces = {"application/json"}, consumes = {"application/json"})
+    public AssignOrder completeDeliveryOrders( @PathVariable("orderId") long orderId) {
+        return orderService.completeOrder(orderId);
+    }
+
+    @PutMapping(value = "/cancelOrder/{orderId}", produces = {"application/json"}, consumes = {"application/json"})
+    public AssignOrder cancelDeliveryOrders( @PathVariable("orderId") long orderId) {
+        return orderService.cancelOrder(orderId);
+    }
+
+
 
 
 }
