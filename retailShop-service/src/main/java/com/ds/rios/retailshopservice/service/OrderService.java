@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,6 +17,7 @@ public class OrderService {
     private RestTemplate restTemplate;
 
     private static final String WAREHOUSE_SERVICE_URL = "http://WAREHOUSE-SERVICE";
+    private static final String DELIVERY_SERVICE_URL = "http://DELIVERY-SERVICE";
 
     public List<WarehouseOrder> getItemWithPendingDelivery(Long id){
        OrderResponse orderResponse=restTemplate.getForObject(WAREHOUSE_SERVICE_URL+"/warehouse/pending-orders/" + id, OrderResponse.class);
@@ -32,6 +34,33 @@ public class OrderService {
         WarehouseOrder warehouseOrders = restTemplate.postForObject(WAREHOUSE_SERVICE_URL+"/warehouse/orders", request,WarehouseOrder.class);
         return warehouseOrders;
     };
+
+    public  List<OrderDetailsResponse> getAllOrdersByRetailId(long  retailShopId){
+        OrderResponse orderResponses = restTemplate.getForObject(WAREHOUSE_SERVICE_URL+"/warehouse/orders/retailShop/"+retailShopId, OrderResponse.class);
+        System.out.println("---------------");
+        System.out.println(orderResponses.getOrderEmbedded().getWarehouseOrders().size());
+//        return orderResponses;//itemResponse.getEmbedded().getItems();
+        return getTheDeliveryDetails(orderResponses);
+    };
+
+    public List<OrderDetailsResponse> getTheDeliveryDetails(OrderResponse orderResponses){
+        List<OrderDetailsResponse> orderDetailsResponses  = new ArrayList<>();
+        for (WarehouseOrder warehouseOrder:
+              orderResponses.getOrderEmbedded().getWarehouseOrders()) {
+            OrderDetailsResponse orderDetailsResponse= new OrderDetailsResponse();
+            orderDetailsResponse.setWarehouseOrder(warehouseOrder);
+            orderDetailsResponse.setStatues(0);
+            if (warehouseOrder.getStatus()!=0){
+                AssignOrder assignOrder = restTemplate.getForObject(DELIVERY_SERVICE_URL+"/delivery/orders/warehouseOrderId/"+warehouseOrder.getId(), AssignOrder.class);
+                orderDetailsResponse.setStatues(1);
+                orderDetailsResponse.setAssignOrder(assignOrder);
+            }
+
+            orderDetailsResponses.add(orderDetailsResponse);
+        }
+
+        return orderDetailsResponses;
+    }
 
 
 

@@ -8,5 +8,7 @@ public interface WarehouseOrderRepository extends JpaRepository<WarehouseOrder, 
 
     List<WarehouseOrder> findByStatus (int status);
 
+    List<WarehouseOrder> findByRetailId(Long retailId);
+
     List<WarehouseOrder> findByRetailIdAndStatus (Long retailId, int status);
 }

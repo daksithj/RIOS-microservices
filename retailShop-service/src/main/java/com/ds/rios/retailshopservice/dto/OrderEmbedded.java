@@ -6,11 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderEmbedded {
-    @JsonProperty("WarehouseOrderList")
-    List<WarehouseOrder> warehouseOrders = new ArrayList<WarehouseOrder>();
+    @JsonProperty("warehouseOrderList")
+    List<WarehouseOrder> warehouseOrders;
 
     public OrderEmbedded(){
 
+    }
+
+    public OrderEmbedded(List<WarehouseOrder> warehouseOrders) {
+        this.warehouseOrders = warehouseOrders;
     }
 
     public List<WarehouseOrder> getWarehouseOrders() {

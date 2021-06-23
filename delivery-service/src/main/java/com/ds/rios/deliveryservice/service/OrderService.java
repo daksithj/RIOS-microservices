@@ -26,6 +26,10 @@ public class OrderService {
         return orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException(id));
     }
 
+    public AssignOrder getOrderByWareHouseOrderId(long id) {
+        return orderRepository.findByOrderId(id).orElseThrow(() -> new OrderNotFoundException(id));
+    }
+
 
 
     public AssignOrder AddNewOrder(AssignOrder assignOrder){

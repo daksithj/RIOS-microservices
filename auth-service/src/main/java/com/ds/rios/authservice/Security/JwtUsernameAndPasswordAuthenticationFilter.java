@@ -77,6 +77,10 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
         map.put("JWT", token);
         map.put("userName",auth.getName());
         response.setContentType("application/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT,OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "*");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
         response.addHeader(jwtConfig.getHeader(), jwtConfig.getPrefix() + token);
         response.getWriter().write(String.valueOf(new JSONObject(map)));
         response.getWriter().flush();

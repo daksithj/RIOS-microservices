@@ -19,6 +19,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:9527")
 public class OrderController {
 
     @Autowired
@@ -42,11 +43,18 @@ public class OrderController {
         return CollectionModel.of(items, linkTo(methodOn(OrderController.class).getAvailableItems()).withSelfRel());
     }
 
-
     @PostMapping("/orders")
     public ResponseEntity<?> newOrder(@RequestBody OrderRequest newOrder) {
         WarehouseOrder b = orderService.addNewWarehouseOrder(newOrder);
                     return new ResponseEntity(b,HttpStatus.CREATED);
 
     }
+
+    @GetMapping("/orders/retailShop/{shopId}")
+    public List<OrderDetailsResponse> getallassingedorders(@PathVariable("shopId") long shopId) {
+        return orderService.getAllOrdersByRetailId(shopId);
+    }
+
+
+
 }
