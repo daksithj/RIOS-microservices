@@ -22,6 +22,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:9527")
 public class OrderController {
 
     @Autowired
@@ -51,12 +52,19 @@ public class OrderController {
 
     }
 
+    @GetMapping(value = "/orders/warehouseOrderId/{warehouseOrderId}", produces = {"application/json"})
+    public AssignOrder getOrderByWareHouseOrderId(@PathVariable("warehouseOrderId") long warehouseOrderId) {
+        AssignOrder orderByWareHouseOrderId = orderService.getOrderByWareHouseOrderId(warehouseOrderId);
+        return  orderByWareHouseOrderId;
+//        EntityModel<AssignOrder> orderEntityModel = oderModelAssembler.toModel(orderService.getOrderById(warehouseOrderId));
+//        return ResponseEntity.created(orderEntityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(orderEntityModel);
+
+    }
 
     @PutMapping(value = "/orders/{orderId}", produces = {"application/json"}, consumes = {"application/json"})
     public AssignOrder updateOrders(@RequestBody AssignOrder assignOrder, @PathVariable("orderId") long orderId) {
         return orderService.updateOrder(orderId, assignOrder);
     }
-
 
 
     @PostMapping(value = "/orders", produces = {"application/json"}, consumes = {"application/json"})

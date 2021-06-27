@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/warehouse")
+@CrossOrigin(origins = "http://localhost:9527")
 public class WarehouseResource {
 
     private final WarehouseItemRepository itemRepository;
@@ -126,6 +127,14 @@ public class WarehouseResource {
     public EntityModel<WarehouseOrder> getOrder(@PathVariable("orderId") long orderId){
         WarehouseOrder foundOrder = orderRepository.findById(orderId).orElseThrow(() -> new NotFoundException(orderId));
         return orderAssembler.toModel(foundOrder);
+    }
+
+    @GetMapping("/orders/retailShop/{shopId}")
+    public CollectionModel<EntityModel<WarehouseOrder>>  getOrderByRetailShopId(@PathVariable("shopId") long shopId){
+        List<EntityModel<WarehouseOrder>> orders = orderRepository.findByRetailId(shopId).stream()
+                .map(orderAssembler::toModel)
+                .collect(Collectors.toList());
+        return CollectionModel.of(orders, linkTo(methodOn(WarehouseResource.class).getAllOrders()).withSelfRel());
     }
 
     @GetMapping("/pending-orders/{retailId}")

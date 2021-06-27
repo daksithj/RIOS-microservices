@@ -38,6 +38,10 @@ public class OrderService {
         return orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException(id));
     }
 
+    public AssignOrder getOrderByWareHouseOrderId(long id) {
+        return orderRepository.findByOrderId(id).orElseThrow(() -> new OrderNotFoundException(id));
+    }
+
     public AssignOrder pickUpOrder(long orderId){
         AssignOrder assignOrderUpdated = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException(orderId));
         assignOrderUpdated.setAssignmentStatus(ORDER_DELIVERY_STATUS_PICKED_UP);

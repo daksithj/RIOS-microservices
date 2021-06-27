@@ -20,6 +20,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:9527")
 public class DriverController {
 
     @Autowired
@@ -66,10 +67,12 @@ public class DriverController {
         return driverService.updateDriverStatus(driverId,driverStatus);
     }
 
+
     @DeleteMapping(value = "/drivers/{driverId}", produces = {"application/json"})
-    public ResponseEntity<?> deleteDriver(@PathVariable("driverId") long driverId) {
+    public ResponseEntity deleteDriver(@PathVariable("driverId") long driverId) {
         driverService.deleteDriverById(driverId);
-        return ResponseEntity.noContent().build();
+//        return  ResponseEntity.ok().build();
+        return ResponseEntity.ok().build();
 
     }
 
