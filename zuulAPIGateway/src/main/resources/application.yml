@@ -4,6 +4,14 @@ server:
 spring:
   application:
     name: zuul-gateway-server
+  cloud:
+    discovery:
+      enabled: true 
+  gateway:
+    discovery:
+      locator:
+        enabled: true
+        lower-case-service-id: true
 
 
 eureka:
